@@ -12,4 +12,5 @@ const s=new server();
  * 4-agregar archivo README.md
  * 5-git add .
  * 6-git commit -m "agregar README.md"
+ * 7-git push
  */
