@@ -9,4 +9,7 @@ const s=new server();
  * 1-git init inicializando el repositorio 
  * 2-git add .
  * 3-git commit -m "primer commit"
+ * 4-agregar archivo README.md
+ * 5-git add .
+ * 6-git commit -m "agregar README.md"
  */
