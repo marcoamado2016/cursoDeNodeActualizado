@@ -1,5 +1,7 @@
 const {response,request}=require('express');
-
+const Usuarios=require('../models/usuario')
+const bcryptjs=require('bcryptjs');
+const { validationResult } = require('express-validator');
 const usuarioGet=(req=request,res=response)=>{
     const {nombre,apellido}=req.body;
     res.status(200).json({
@@ -50,10 +52,50 @@ const usuarioPost=(req,res=response)=>{
         nombre
     })
 }
+const usuarioMongo=async(req=require,res=response)=>{
+    let {nombre,correo,password,rol}=req.body;
+    //const usuario=new Usuarios(body);
+    const usuario=new Usuarios({nombre,correo,password,rol});
+    /**
+     * 1-verficar si el correo existe
+     * 2-Encriptar la contraseña
+     * 3-Guardar en la ase de daots
+     */
+    const errors=validationResult(req);
+    if(!errors.isEmpty()){
+        return res.status(400).json({errors})
+    }
+    const salt=bcryptjs.genSaltSync(10)
+    //validar que el correo exista
+    const validarEmail=await Usuarios.findOne({correo});
+    
+    if(validarEmail){
+        return res.status(400).json({error:'Este correo ya existe'})
+    }
+    //Encriptar la contraseña
+
+    usuario.password=bcryptjs.hashSync(password,salt);
+
+    //Guardar la contraseña
+
+    await usuario.save();
+
+
+    res.status(200).json({
+        nombre,correo,password,rol
+    })
+/**
+ * instalar para encriptar la contraseña
+ * npm i bcryptjs
+ * instalar la validacion con  npm install express-validator
+ */
+
+}
 module.exports={
     usuarioGet,
     usuarioPut,
     usuarioPost,
     usuarioGetParams,
-    usuarioGetParamsDes
+    usuarioGetParamsDes,
+    usuarioMongo
 }

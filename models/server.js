@@ -1,16 +1,17 @@
 
 const express=require('express');
 require('dotenv').config();
-const core=require('cors')
+const core=require('cors');
+const {dbConection}=require('../database/config')
 class server{
 
     constructor(){
-        this.app=express();
-        
+        this.app=express();        
         this.middlewares();
         this.port=process.env.PORT;
         this.listen();
         this.ruta='/principal';
+        this.conectarBD();
         this.routes();
         
     }
@@ -21,7 +22,11 @@ class server{
         //lectura y parseo del body
         this.app.use(express.json())
     }
-
+    async conectarBD(){
+        await dbConection()
+        .then(res=>{console.log("exito en la conexion de datos")})
+        .catch(res=>{console.log("Error al conectar con la base de datos")})
+    }
     routes(){
 
         this.app.use(this.ruta,require('../routes/user')) //requiero el archivo de rutas en user

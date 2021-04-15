@@ -13,4 +13,7 @@ const s=new server();
  * 5-git add .
  * 6-git commit -m "agregar README.md"
  * 7-git push
+ * 8-git tag
+ * 9-git tag -a v1.0.0 -m "Fin desarrollo"
+ *10-git push --tags
  */
